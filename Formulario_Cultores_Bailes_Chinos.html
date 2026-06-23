@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Cultores - Bailes Chinos Aconcagua</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .contenedor {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .encabezado {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        .encabezado h1 {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .encabezado p {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .seccion {
+            margin-bottom: 30px;
+        }
+
+        .seccion-titulo {
+            font-size: 16px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .requerido {
+            color: #e74c3c;
+        }
+
+        .ayuda {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="date"]:focus,
+        input[type="tel"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[readonly] {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .fila {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .fila-tres {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .opciones {
+            display: grid;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .opciones label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+
+        .opciones input[type="checkbox"],
+        .opciones input[type="radio"] {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .contador {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .lista-fotos {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .lista-fotos ul {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .lista-fotos li {
+            padding: 4px 0;
+            color: #666;
+        }
+
+        .botones {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 14px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #btnEnviar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-width: 200px;
+        }
+
+        #btnEnviar:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        #btnEnviar:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        #btnLimpiar {
+            background: #ecf0f1;
+            color: #666;
+            min-width: 150px;
+        }
+
+        #btnLimpiar:hover {
+            background: #d5dbdd;
+        }
+
+        .mensaje {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .mensaje.error {
+            background: #fadbd8;
+            color: #c0392b;
+            border: 1px solid #e74c3c;
+            display: block;
+        }
+
+        .mensaje.exito {
+            background: #d5f4e6;
+            color: #27ae60;
+            border: 1px solid #2ecc71;
+            display: block;
+        }
+
+        .indicador-carga {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .nota {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 12px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .contenedor {
+                padding: 20px;
+            }
+
+            .encabezado h1 {
+                font-size: 22px;
+            }
+
+            .fila,
+            .fila-tres {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .botones {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .estado-campo {
+            font-size: 11px;
+            color: #27ae60;
+            margin-top: 2px;
+        }
+
+        input.valido {
+            border-color: #27ae60;
+            background: #f0fdf4;
+        }
+
+        input.invalido {
+            border-color: #e74c3c;
+            background: #fef5f5;
+        }
+
+        .error-campo {
+            font-size: 12px;
+            color: #e74c3c;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="encabezado">
+            <h1>📋 Registro de Cultores de Bailes Chinos</h1>
+            <p>Zona Aconcagua - Municipalidad de San Felipe</p>
+        </div>
+
+        <div class="nota">
+            <strong>ℹ️ Importante:</strong> Los campos marcados con <span class="requerido">*</span> son obligatorios. 
+            Tómate tu tiempo para completar la información con precisión.
+        </div>
+
+        <form id="formulario">
+            <!-- SECCIÓN 1: DATOS PERSONALES -->
+            <div class="seccion">
+                <div class="seccion-titulo">1. Datos Personales</div>
+
+                <div class="fila">
+                    <div class="campo">
+                        <label>RUT <span class="requerido">*</span></label>
+                        <div class="ayuda">Ej: 12345678-9</div>
+                        <input type="text" id="rut" required placeholder="12345678-9">
+                        <div class="error-campo" id="errorRut"></div>
+                    </div>
+
+                    <div class="campo">
+                        <label>Nombres <span class="requerido">*</span></label>
+                        <div class="ayuda">Todos tus nombres</div>
+                        <input type="text" id="nombres" required placeholder="Juan Pablo">
+                    </div>
+                </div>
+
+                <div class="fila">
+                    <div class="campo">
+                        <label>Apellido Paterno <span class="requerido">*</span></label>
+                        <input type="text" id="apellidoPaterno" required placeholder="Pérez">
+                    </div>
+
+                    <div class="campo">
+                        <label>Apellido Materno</label>
+                        <input type="text" id="apellidoMaterno" placeholder="González">
+                    </div>
+                </div>
+
+                <div class="fila">
+                    <div class="campo">
+                        <label>Género</label>
+                        <select id="genero">
+                            <option value="">Seleccionar...</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Otro">Otro</option>
+                            <option value="Prefiero no decir">Prefiero no decir</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label>Fecha de Nacimiento</label>
+                        <div class="ayuda">Formato: DD/MM/AAAA</div>
+                        <input type="date" id="fechaNacimiento">
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label>Lugar de Nacimiento</label>
+                    <input type="text" id="lugarNacimiento" placeholder="Ciudad o localidad">
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: BAILE CHINO -->
+            <div class="seccion">
+                <div class="seccion-titulo">2. Información del Baile Chino</div>
+
+                <div class="campo">
+                    <label>Baile Chino en el que participa <span class="requerido">*</span></label>
+                    <div class="ayuda">Nombre del grupo o baile</div>
+                    <input type="text" id="baileChino" required placeholder="Ej: Baile Chino Hermanos Prado">
+                </div>
+
+                <div class="campo">
+                    <label>Dominio Específico <span class="requerido">*</span></label>
+                    <div class="ayuda">Selecciona uno o más roles que desempeñas</div>
+                    <div class="opciones" id="dominios">
+                        <label><input type="checkbox" value="Flautero/a"> Flautero/a</label>
+                        <label><input type="checkbox" value="Flautero/a puntero/a"> Flautero/a puntero/a</label>
+                        <label><input type="checkbox" value="Tamborero/a"> Tamborero/a</label>
+                        <label><input type="checkbox" value="Bombero/a"> Bombero/a</label>
+                        <label><input type="checkbox" value="Alférez"> Alférez</label>
+                        <label><input type="checkbox" value="Romancero"> Romancero</label>
+                        <label><input type="checkbox" value="Cacique"> Cacique</label>
+                        <label><input type="checkbox" value="Aguatero/a"> Aguatero/a</label>
+                        <label><input type="checkbox" value="Portaestandarte"> Portaestandarte</label>
+                        <label><input type="checkbox" value="Portador de anda de figura religiosa"> Portador de anda de figura religiosa</label>
+                        <label><input type="checkbox" value="Cocinero/a"> Cocinero/a</label>
+                        <label><input type="checkbox" value="Caporal"> Caporal</label>
+                        <label><input type="checkbox" value="Mayordomo"> Mayordomo</label>
+                        <label><input type="checkbox" value="Diablo"> Diablo</label>
+                        <label><input type="checkbox" value="Constructor de Flautas"> Constructor de Flautas</label>
+                        <label><input type="checkbox" value="Constructor de Tambores y/o bombos"> Constructor de Tambores y/o bombos</label>
+                        <label><input type="checkbox" value="Diseño y/o elaboración de uniformes"> Diseño y/o elaboración de uniformes</label>
+                        <label><input type="checkbox" value="Otro"> Otro</label>
+                    </div>
+                    <input type="text" id="dominioOtro" placeholder="Especifica otro dominio" style="display:none; margin-top:10px;">
+                    <div class="error-campo" id="errorDominios"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: ANTECEDENTES -->
+            <div class="seccion">
+                <div class="seccion-titulo">3. Antecedentes Biográficos</div>
+
+                <div class="campo">
+                    <label>Antecedentes Biográficos <span class="requerido">*</span></label>
+                    <div class="ayuda">Describe tu historia en los Bailes Chinos, logros, participaciones memorables, etc. Máximo 32.767 caracteres.</div>
+                    <textarea id="antecedentes" required maxlength="32767" placeholder="Cuéntanos tu historia..."></textarea>
+                    <div class="contador" id="contador">0 / 32767</div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: UBICACIÓN -->
+            <div class="seccion">
+                <div class="seccion-titulo">4. Ubicación / Residencia</div>
+
+                <div class="campo">
+                    <label>Comuna <span class="requerido">*</span></label>
+                    <select id="comuna" required>
+                        <option value="">Seleccionar comuna...</option>
+                        <option value="San Felipe">San Felipe</option>
+                        <option value="Los Andes">Los Andes</option>
+                        <option value="San Esteban">San Esteban</option>
+                        <option value="Putaendo">Putaendo</option>
+                        <option value="Panquehue">Panquehue</option>
+                        <option value="Limache">Limache</option>
+                        <option value="Olmué">Olmué</option>
+                        <option value="Otra">Otra (especificar abajo)</option>
+                    </select>
+                    <input type="text" id="comunaOtra" placeholder="Especifica otra comuna" style="display:none; margin-top:10px;">
+                </div>
+
+                <div class="fila">
+                    <div class="campo">
+                        <label>Provincia</label>
+                        <div class="ayuda">Se completa automáticamente</div>
+                        <input type="text" id="provincia" readonly>
+                    </div>
+
+                    <div class="campo">
+                        <label>Región</label>
+                        <div class="ayuda">Se completa automáticamente</div>
+                        <input type="text" id="region" readonly>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label>País <span class="requerido">*</span></label>
+                    <input type="text" id="pais" value="Chile" readonly>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 5: CONTACTO -->
+            <div class="seccion">
+                <div class="seccion-titulo">5. Contacto</div>
+
+                <div class="fila">
+                    <div class="campo">
+                        <label>Teléfono Móvil</label>
+                        <div class="ayuda">Incluye prefijo. Ej: 56 912345678</div>
+                        <input type="tel" id="telefonoMovil" placeholder="56 ">
+                        <div class="error-campo" id="errorTelefonoMovil"></div>
+                    </div>
+
+                    <div class="campo">
+                        <label>Teléfono Fijo</label>
+                        <div class="ayuda">Incluye prefijo. Ej: 56 221234567</div>
+                        <input type="tel" id="telefonoFijo" placeholder="56 ">
+                        <div class="error-campo" id="errorTelefonoFijo"></div>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label>Correo Electrónico</label>
+                    <div class="ayuda">Ingresa un email válido (opcional)</div>
+                    <input type="email" id="email" placeholder="tu.email@ejemplo.com">
+                    <div class="error-campo" id="errorEmail"></div>
+                </div>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="botones">
+                <button type="reset" id="btnLimpiar">Limpiar Formulario</button>
+                <button type="submit" id="btnEnviar">Enviar Registro</button>
+            </div>
+
+            <!-- MENSAJES -->
+            <div id="indicadorCarga" class="indicador-carga">
+                <div class="spinner"></div>
+                <p style="margin-top: 10px;">Enviando tu registro...</p>
+            </div>
+
+            <div id="mensaje" class="mensaje"></div>
+        </form>
+    </div>
+
+    <script>
+        // Variables globales
+        const form = document.getElementById('formulario');
+        const btnEnviar = document.getElementById('btnEnviar');
+        const indicadorCarga = document.getElementById('indicadorCarga');
+        const mensajeDiv = document.getElementById('mensaje');
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzJ2mVFWOtPS8NfU2OedDYMbSXrD07k8YjvACs2gT7gworMqVnIpdCsQDoNxiOGGP1peg/exec"; // Se reemplaza con la URL del Apps Script
+
+        // MAPEO DE COMUNAS A PROVINCIA Y REGIÓN
+        const datosComuna = {
+            'San Felipe': { provincia: 'San Felipe', region: 'Región de Valparaíso' },
+            'Los Andes': { provincia: 'Los Andes', region: 'Región de Valparaíso' },
+            'San Esteban': { provincia: 'Los Andes', region: 'Región de Valparaíso' },
+            'Putaendo': { provincia: 'Los Andes', region: 'Región de Valparaíso' },
+            'Panquehue': { provincia: 'Los Andes', region: 'Región de Valparaíso' },
+            'Limache': { provincia: 'Marga Marga', region: 'Región de Valparaíso' },
+            'Olmué': { provincia: 'Marga Marga', region: 'Región de Valparaíso' },
+            'Otra': { provincia: '', region: '' }
+        };
+
+        // EVENT LISTENERS
+        document.getElementById('comuna').addEventListener('change', actualizarProvinciayRegion);
+        document.getElementById('dominios').addEventListener('change', mostrarOtroDominio);
+        document.getElementById('antecedentes').addEventListener('input', actualizarContador);
+        form.addEventListener('submit', enviarFormulario);
+
+        // FUNCIONES
+
+        function actualizarProvinciayRegion() {
+            const comuna = document.getElementById('comuna').value;
+            const comunaOtraDiv = document.getElementById('comunaOtra').parentElement;
+
+            if (comuna === 'Otra') {
+                document.getElementById('comunaOtra').style.display = 'block';
+                document.getElementById('provincia').value = '';
+                document.getElementById('region').value = '';
+            } else {
+                document.getElementById('comunaOtra').style.display = 'none';
+                const datos = datosComuna[comuna] || { provincia: '', region: '' };
+                document.getElementById('provincia').value = datos.provincia;
+                document.getElementById('region').value = datos.region;
+            }
+        }
+
+        function mostrarOtroDominio() {
+            const otro = Array.from(document.querySelectorAll('#dominios input[type="checkbox"]'))
+                .find(cb => cb.value === 'Otro' && cb.checked);
+            document.getElementById('dominioOtro').style.display = otro ? 'block' : 'none';
+        }
+
+        function actualizarContador() {
+            const texto = document.getElementById('antecedentes').value;
+            document.getElementById('contador').textContent = `${texto.length} / 32767`;
+        }
+
+        function validarRUT(rut) {
+            rut = rut.toUpperCase().replace(/\./g, '').replace(/\s/g, '');
+            if (!/^[0-9]{1,8}-[0-9K]$/.test(rut)) return false;
+
+            const [nums, verificador] = rut.split('-');
+            let suma = 0;
+            let multiplicador = 2;
+
+            for (let i = nums.length - 1; i >= 0; i--) {
+                suma += parseInt(nums[i]) * multiplicador;
+                multiplicador++;
+                if (multiplicador > 7) multiplicador = 2;
+            }
+
+            const digito = 11 - (suma % 11);
+            const digVerif = digito === 11 ? '0' : digito === 10 ? 'K' : digito.toString();
+
+            return verificador === digVerif;
+        }
+
+        function validarTelefono(telefono) {
+            if (!telefono) return true; // Campo opcional
+            return /^56\s\d{9}$/.test(telefono);
+        }
+
+        function validarEmail(email) {
+            if (!email) return true; // Campo opcional
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validarDominios() {
+            const checkboxes = document.querySelectorAll('#dominios input[type="checkbox"]');
+            return Array.from(checkboxes).some(cb => cb.checked);
+        }
+
+        async function enviarFormulario(e) {
+            e.preventDefault();
+
+            // VALIDACIONES
+            const rut = document.getElementById('rut').value;
+            if (!validarRUT(rut)) {
+                mostrarError('El RUT ingresado no es válido');
+                return;
+            }
+
+            const telefonoMovil = document.getElementById('telefonoMovil').value;
+            if (!validarTelefono(telefonoMovil)) {
+                mostrarError('El teléfono móvil debe estar en formato: 56 912345678');
+                return;
+            }
+
+            const telefonoFijo = document.getElementById('telefonoFijo').value;
+            if (!validarTelefono(telefonoFijo)) {
+                mostrarError('El teléfono fijo debe estar en formato: 56 221234567');
+                return;
+            }
+
+            const email = document.getElementById('email').value;
+            if (!validarEmail(email)) {
+                mostrarError('El correo electrónico no es válido');
+                return;
+            }
+
+            if (!validarDominios()) {
+                mostrarError('Debes seleccionar al menos un dominio/rol');
+                return;
+            }
+
+            // RECOLECTAR DATOS
+            const dominiosSeleccionados = Array.from(document.querySelectorAll('#dominios input[type="checkbox"]:checked'))
+                .map(cb => cb.value)
+                .join(', ');
+
+            const datos = {
+                rut: rut.toUpperCase(),
+                nombres: document.getElementById('nombres').value,
+                apellidoPaterno: document.getElementById('apellidoPaterno').value,
+                apellidoMaterno: document.getElementById('apellidoMaterno').value,
+                genero: document.getElementById('genero').value,
+                fechaNacimiento: document.getElementById('fechaNacimiento').value,
+                lugarNacimiento: document.getElementById('lugarNacimiento').value,
+                baileChino: document.getElementById('baileChino').value,
+                dominios: dominiosSeleccionados,
+                antecedentes: document.getElementById('antecedentes').value,
+                comuna: document.getElementById('comuna').value === 'Otra' 
+                    ? document.getElementById('comunaOtra').value 
+                    : document.getElementById('comuna').value,
+                provincia: document.getElementById('provincia').value,
+                region: document.getElementById('region').value,
+                pais: document.getElementById('pais').value,
+                telefonoMovil: telefonoMovil,
+                telefonoFijo: telefonoFijo,
+                email: email
+            };
+
+            // ENVIAR
+            btnEnviar.disabled = true;
+            indicadorCarga.style.display = 'block';
+            mensajeDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(datos)
+                });
+
+                const resultado = await response.json();
+
+                if (resultado.success) {
+                    mostrarExito('¡Registro enviado correctamente! Gracias por tu participación.');
+                    form.reset();
+                    actualizarContador();
+                    actualizarProvinciayRegion();
+                } else {
+                    mostrarError(resultado.mensaje || 'Error al enviar el registro');
+                }
+            } catch (error) {
+                mostrarError('Error al enviar: ' + error.message);
+            } finally {
+                btnEnviar.disabled = false;
+                indicadorCarga.style.display = 'none';
+            }
+        }
+
+        function mostrarError(mensaje) {
+            mensajeDiv.innerHTML = '❌ ' + mensaje;
+            mensajeDiv.className = 'mensaje error';
+            mensajeDiv.style.display = 'block';
+            window.scrollTo({ top: mensajeDiv.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function mostrarExito(mensaje) {
+            mensajeDiv.innerHTML = '✅ ' + mensaje;
+            mensajeDiv.className = 'mensaje exito';
+            mensajeDiv.style.display = 'block';
+            window.scrollTo({ top: mensajeDiv.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        // INICIALIZACIÓN
+        document.getElementById('pais').value = 'Chile';
+    </script>
+</body>
+</html>
